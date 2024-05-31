@@ -13,7 +13,6 @@ const authRouter = require("../../controllers/authController");
 
 const app = express();
 app.use(express.json());
-mongoose.connect(process.env.MONGODB_URI);
 app.use(methodOverride("_method"));
 
 // ! I need to tell express to expect data from our form
@@ -154,5 +153,11 @@ app.post("/movies/:movieId/reviews", async (req, res) => {
     res.redirect("/auth/sign-in");
   }
 });
+
+async function start() {
+  await mongoose.connect(process.env.MONGODB_URI);
+}
+
+start()
 
 module.exports.handler = serverless(app)
